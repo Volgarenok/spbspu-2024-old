@@ -2,6 +2,6 @@
 
 int main()
 {
-  std::cout << "volkov.kirill" << std::endl;
+  std::cout << "volkov.kirill\n";
   return 0;
 }
