@@ -11,9 +11,9 @@ void printArea(const Shape &shape)
 void printFrameRect(const Shape &shape)
 {
   rectangle_t frameRect = shape.getFrameRect();
-  std::cout <<  "Center is " << '(' 
-      << frameRect.pos.x << ", " << frameRect.pos.y << ')' 
-      << ", Height is " << frameRect.height 
+  std::cout <<  "Center is " << '('
+      << frameRect.pos.x << ", " << frameRect.pos.y << ')'
+      << ", Height is " << frameRect.height
       << ", Width is " << frameRect.width << "\n\n";
 }
 
