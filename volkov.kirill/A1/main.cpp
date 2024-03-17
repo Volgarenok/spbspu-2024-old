@@ -3,18 +3,18 @@
 #include "circle.hpp"
 #include "rectangle.hpp"
 
-void printArea(const Shape& shape)
+void printArea(const Shape &shape)
 {
   std::cout << "Area is " << shape.getArea() << "\n";
 }
 
-void printFrameRect(const Shape& shape)
+void printFrameRect(const Shape &shape)
 {
   rectangle_t frameRect = shape.getFrameRect();
-  std::cout << "Center is " << '('
-    << frameRect.pos.x << ", " << frameRect.pos.y << ')'
-    << ", Height is " << frameRect.height
-    << ", Width is " << frameRect.width << "\n\n";
+  std::cout <<  "Center is " << '(' 
+      << frameRect.pos.x << ", " << frameRect.pos.y << ')' 
+      << ", Height is " << frameRect.height 
+      << ", Width is " << frameRect.width << "\n\n";
 }
 
 int main()

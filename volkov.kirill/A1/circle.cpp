@@ -3,7 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Circle::Circle(const point_t& pos, double radius) :
+Circle::Circle(const point_t &pos, double radius) :
   center_(pos),
   radius_(radius)
 {
@@ -20,7 +20,7 @@ rectangle_t Circle::getFrameRect() const
   return { center_, radius_ * 2, radius_ * 2 };
 }
 
-void Circle::move(const point_t& newPos)
+void Circle::move(const point_t &newPos)
 {
   center_ = newPos;
 }
