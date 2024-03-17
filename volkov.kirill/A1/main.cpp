@@ -38,5 +38,6 @@ int main()
   rectangle.move({ 10, 11 });
   printArea(rectangle);
   printFrameRect(rectangle);
+
   return 0;
 }
