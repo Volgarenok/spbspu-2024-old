@@ -24,7 +24,7 @@ int main()
   printArea(rectangle);
   printFrameRect(rectangle);
 
-  std::cout << "Circle center  is (5, 6), radiius = 7\n";
+  std::cout << "Circle center is (5, 6), radiius = 7\n";
   Circle circle({ 5, 6 }, 7);
   printArea(circle);
   printFrameRect(circle);
