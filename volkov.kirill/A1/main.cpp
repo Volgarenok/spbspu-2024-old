@@ -28,7 +28,7 @@ int main()
       shape->move(8, 9);
       std::cout << "Move by (dx = 8 and dy = 9)\n";
       printFrameRect(*shape, std::cout);
-      
+
       shape->move({ 10, 11 });
       std::cout << "Move to the point (10, 11)\n";
       printFrameRect(*shape, std::cout);
