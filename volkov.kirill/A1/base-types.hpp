@@ -14,4 +14,4 @@ struct rectangle_t
   double width;
 };
 
-#endif // !BASE_TYPES_HPP
+#endif

@@ -1,18 +1,22 @@
 #include "circle.hpp"
-#include <cassert>
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include <stdexcept>
+#include <cmath>
 
-Circle::Circle(const point_t &pos, double radius) :
+const double PI = 3.141592;
+
+Circle::Circle(const point_t &pos, double radius):
   center_(pos),
   radius_(radius)
 {
-  assert(radius_ >= 0.0);
+  if (radius_ <= 0.0)
+  {
+    throw std::invalid_argument("Circle radius must be greater than zero");
+  }
 }
 
 double Circle::getArea() const
 {
-  return (M_PI * radius_ * radius_);
+  return (PI * radius_ * radius_);
 }
 
 rectangle_t Circle::getFrameRect() const
@@ -30,8 +34,3 @@ void Circle::move(double dx, double dy)
   center_.x += dx;
   center_.y += dy;
 }
-
-point_t Circle::getPos() const
-{
-  return center_;
-};

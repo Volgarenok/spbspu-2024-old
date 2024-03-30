@@ -1,12 +1,15 @@
 #include "rectangle.hpp"
-#include <cassert>
+#include <stdexcept>
 
 Rectangle::Rectangle(const point_t &pos, double height, double width) :
   center_(pos),
   height_(height),
   width_(width)
 {
-  assert((height_ >= 0.0) && (width_ >= 0.0));
+  if (height_ <= 0.0 || width_ <= 0.0)
+  {
+    throw std::invalid_argument("Rectangle dimensions must be greater than zero");
+  }
 }
 
 double Rectangle::getArea() const
@@ -28,9 +31,4 @@ void Rectangle::move(double dx, double dy)
 {
   center_.x += dx;
   center_.y += dy;
-}
-
-point_t Rectangle::getPos() const
-{
-  return center_;
 }
