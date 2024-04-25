@@ -6,9 +6,9 @@
 void printFrameRect(const Shape &shape, std::ostream& out)
 {
   rectangle_t frameRect = shape.getFrameRect();
-  out << "Center is " << '(' << frameRect.pos.x << ", " << frameRect.pos.y << ')'
-      << ", Height is " << frameRect.height
-      << ", Width is " << frameRect.width << "\n\n";
+  out << frameRect.pos.x << ' ' << frameRect.pos.y << ' '
+      << frameRect.height << ' '
+      << frameRect.width << ' ';
 }
 
 int main()
@@ -22,16 +22,19 @@ int main()
     for (Shape* shape : shapes)
     {
       std::cout << typeid(*shape).name() << "\n";
-      std::cout << "Area: " << shape->getArea() << "\n";
+      std::cout << shape->getArea() << "\n";
       printFrameRect(*shape, std::cout);
+      std::cout << "\n\n";
 
       shape->move(8, 9);
       std::cout << "Move by (dx = 8 and dy = 9)\n";
       printFrameRect(*shape, std::cout);
+      std::cout << "\n\n";
 
       shape->move({ 10, 11 });
       std::cout << "Move to the point (10, 11)\n";
       printFrameRect(*shape, std::cout);
+      std::cout << "\n\n";
     }
   }
   catch(const std::invalid_argument& e)
