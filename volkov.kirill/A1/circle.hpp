@@ -2,7 +2,7 @@
 #define CIRCLE_HPP
 #include "shape.hpp"
 
-class Circle final : public Shape
+class Circle final: public Shape
 {
 public:
   Circle(const point_t &center, double radius);

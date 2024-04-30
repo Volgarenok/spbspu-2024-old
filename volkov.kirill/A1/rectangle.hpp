@@ -2,7 +2,7 @@
 #define RECTANGLE_HPP
 #include "shape.hpp"
 
-class Rectangle final : public Shape
+class Rectangle final: public Shape
 {
 public:
   Rectangle(const point_t &center, double height, double width);
