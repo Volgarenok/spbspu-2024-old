@@ -12,7 +12,10 @@ namespace volkov
     virtual rectangle_t getFrameRect() const = 0;
     virtual void move(const point_t&) = 0;
     virtual void move(double dx, double dy) = 0;
-    virtual void scale(double factor) = 0;
+    void scale(double factor);
+
+  protected:
+    virtual void doScale(double factor) = 0;
   };
 }
 

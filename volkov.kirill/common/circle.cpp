@@ -1,8 +1,8 @@
-#include "circle.hpp"
 #include <stdexcept>
 #include <cmath>
+#include "circle.hpp"
 
-const double PI = 3.141592;
+constexpr double PI = 3.141592;
 
 volkov::Circle::Circle(const point_t &pos, double radius):
   center_(pos),
@@ -35,14 +35,7 @@ void volkov::Circle::move(double dx, double dy)
   center_.y += dy;
 }
 
-void volkov::Circle::scale(double factor)
+void volkov::Circle::doScale(double factor)
 {
-  if (factor > 0.0)
-  {
-    radius_ *= factor;
-  }
-  else
-  {
-    throw std::invalid_argument("Factor cannot be negative");
-  }
+  radius_ *= factor;
 }

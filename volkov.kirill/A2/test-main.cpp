@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE A2
 #include <stdexcept>
 #include <boost/test/included/unit_test.hpp>
-#include "rectangle.hpp"
-#include "circle.hpp"
+#include <rectangle.hpp>
+#include <circle.hpp>
 
 BOOST_AUTO_TEST_SUITE(testShape)
 

@@ -1,5 +1,5 @@
-#include "rectangle.hpp"
 #include <stdexcept>
+#include "rectangle.hpp"
 
 volkov::Rectangle::Rectangle(const point_t &pos, double height, double width):
   center_(pos),
@@ -33,15 +33,8 @@ void volkov::Rectangle::move(double dx, double dy)
   center_.y += dy;
 }
 
-void volkov::Rectangle::scale(double factor)
+void volkov::Rectangle::doScale(double factor)
 {
-  if (factor > 0.0)
-  {
-    width_ *= factor;
-    height_ *= factor;
-  }
-  else
-  {
-    throw std::invalid_argument("Factor cannot be negative");
-  }
+  width_ *= factor;
+  height_ *= factor;
 }
