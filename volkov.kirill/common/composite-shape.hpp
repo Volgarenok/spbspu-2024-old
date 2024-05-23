@@ -1,5 +1,6 @@
 #ifndef COMPOSITE_SHAPE_HPP
 #define COMPOSITE_SHAPE_HPP
+#include <cstddef>
 #include "shape.hpp"
 
 namespace volkov
@@ -16,7 +17,7 @@ namespace volkov
 
     CompositeShape& operator =(const CompositeShape& rhs);
     CompositeShape& operator =(CompositeShape&& rhs);
-    Shape& operator [](size_t index) const;
+    Shape& operator[](size_t index) const;
 
     double getArea() const override;
     rectangle_t getFrameRect() const override;
