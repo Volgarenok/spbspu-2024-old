@@ -170,7 +170,7 @@ void volkov::CompositeShape::add(Shape& shape)
 
 void volkov::CompositeShape::remove(size_t index)
 {
-  if (index < 0 || index >= count_)
+  if (index >= count_)
   {
     throw std::out_of_range("Invalid index");
   }
