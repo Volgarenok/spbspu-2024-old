@@ -16,16 +16,16 @@ int main()
 {
   try
   {
-    volkov::Rectangle rectangle({ {1, 2}, 3, 4 });
-    volkov::Circle circle({ 5, 6 }, 7);
+    volkov::Shape* rectangle = new volkov::Rectangle({ {1, 2}, 3, 4 });
+    volkov::Shape* circle = new volkov::Circle({ 5, 6 }, 7);
 
     volkov::CompositeShape shape;
-    shape.add(rectangle);
+    shape.add(*rectangle);
     std::cout << shape.getArea() << "\n";
     printFrameRect(shape, std::cout);
     std::cout << "\n\n";
 
-    shape.add(circle);
+    shape.add(*circle);
     std::cout << shape.getArea() << "\n";
     printFrameRect(shape, std::cout);
     std::cout << "\n\n";
@@ -49,6 +49,9 @@ int main()
     std::cout << shape.getArea() << "\n";
     printFrameRect(shape, std::cout);
     std::cout << "\n\n";
+
+    delete rectangle;
+    delete circle;
   }
   catch (const std::invalid_argument& e)
   {

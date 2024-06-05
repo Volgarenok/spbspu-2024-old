@@ -11,13 +11,14 @@ namespace volkov
   public:
     CompositeShape();
     CompositeShape(const CompositeShape& source);
-    CompositeShape(CompositeShape&& source);
+    CompositeShape(CompositeShape&& source) noexcept;
     CompositeShape(Shape& shape);
     ~CompositeShape() override;
 
-    CompositeShape& operator =(const CompositeShape& rhs);
-    CompositeShape& operator =(CompositeShape&& rhs);
-    Shape& operator[](size_t index) const;
+    CompositeShape& operator=(const CompositeShape& rhs);
+    CompositeShape& operator=(CompositeShape&& rhs) noexcept;
+    const Shape& operator[](size_t index) const;
+    const Shape& at(size_t index) const;
 
     double getArea() const override;
     rectangle_t getFrameRect() const override;

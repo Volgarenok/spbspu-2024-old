@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <stdexcept>
 #include "composite-shape.hpp"
 
@@ -16,7 +17,7 @@ volkov::CompositeShape::CompositeShape(const CompositeShape& source):
   }
 }
 
-volkov::CompositeShape::CompositeShape(CompositeShape&& source):
+volkov::CompositeShape::CompositeShape(CompositeShape&& source) noexcept:
   count_(source.count_),
   shapeArr_(source.shapeArr_)
 {
@@ -36,7 +37,7 @@ volkov::CompositeShape::~CompositeShape()
   delete[] shapeArr_;
 }
 
-volkov::CompositeShape& volkov::CompositeShape::operator =(const CompositeShape& rhs)
+volkov::CompositeShape& volkov::CompositeShape::operator=(const CompositeShape& rhs)
 {
   if (this != &rhs)
   {
@@ -54,7 +55,7 @@ volkov::CompositeShape& volkov::CompositeShape::operator =(const CompositeShape&
   return *this;
 }
 
-volkov::CompositeShape& volkov::CompositeShape::operator =(CompositeShape&& rhs)
+volkov::CompositeShape& volkov::CompositeShape::operator=(CompositeShape&& rhs) noexcept
 {
   if (this != &rhs)
   {
@@ -68,7 +69,12 @@ volkov::CompositeShape& volkov::CompositeShape::operator =(CompositeShape&& rhs)
   return *this;
 }
 
-volkov::Shape& volkov::CompositeShape::operator [](size_t index) const
+const volkov::Shape& volkov::CompositeShape::operator[](size_t index) const
+{
+  return *shapeArr_[index];
+}
+
+const volkov::Shape& volkov::CompositeShape::at(size_t index) const
 {
   if (index >= count_)
   {
@@ -90,6 +96,26 @@ double volkov::CompositeShape::getArea() const
   return compositeArea;
 }
 
+bool compareMaxX(const volkov::Shape* a, const volkov::Shape* b)
+{
+  return (a->getFrameRect().pos.x + a->getFrameRect().width / 2) < (b->getFrameRect().pos.x + b->getFrameRect().width / 2);
+}
+
+bool compareMinX(const volkov::Shape* a, const volkov::Shape* b)
+{
+  return (a->getFrameRect().pos.x - a->getFrameRect().width / 2) < (b->getFrameRect().pos.x - b->getFrameRect().width / 2);
+}
+
+bool compareMaxY(const volkov::Shape* a, const volkov::Shape* b)
+{
+  return (a->getFrameRect().pos.y + a->getFrameRect().height / 2) < (b->getFrameRect().pos.y + b->getFrameRect().height / 2);
+}
+
+bool compareMinY(const volkov::Shape* a, const volkov::Shape* b)
+{
+  return (a->getFrameRect().pos.y - a->getFrameRect().height / 2) < (b->getFrameRect().pos.y - b->getFrameRect().height / 2);
+}
+
 volkov::rectangle_t volkov::CompositeShape::getFrameRect() const
 {
   if (count_ == 0)
@@ -97,20 +123,15 @@ volkov::rectangle_t volkov::CompositeShape::getFrameRect() const
     throw std::logic_error("Object doesn't exist");
   }
 
-  rectangle_t rect = shapeArr_[0]->getFrameRect();
-  double maxY = rect.pos.y + rect.height / 2;
-  double minY = rect.pos.y - rect.height / 2;
-  double maxX = rect.pos.x + rect.width / 2;
-  double minX = rect.pos.x - rect.width / 2;
+  auto minXIter = std::min_element(shapeArr_, shapeArr_ + count_, compareMinX);
+  auto maxXIter = std::max_element(shapeArr_, shapeArr_ + count_, compareMaxX);
+  auto minYIter = std::min_element(shapeArr_, shapeArr_ + count_, compareMinY);
+  auto maxYIter = std::max_element(shapeArr_, shapeArr_ + count_, compareMaxY);
 
-  for (size_t i = 1; i < count_; i++)
-  {
-    rect = shapeArr_[i]->getFrameRect();
-    maxY = std::max(maxY, rect.pos.y + rect.height / 2);
-    minY = std::min(minY, rect.pos.y - rect.height / 2);
-    maxX = std::max(maxX, rect.pos.x + rect.width / 2);
-    minX = std::min(minX, rect.pos.x - rect.width / 2);
-  }
+  double minX = (*minXIter)->getFrameRect().pos.x - (*minXIter)->getFrameRect().width / 2;
+  double maxX = (*maxXIter)->getFrameRect().pos.x + (*maxXIter)->getFrameRect().width / 2;
+  double minY = (*minYIter)->getFrameRect().pos.y - (*minYIter)->getFrameRect().height / 2;
+  double maxY = (*maxYIter)->getFrameRect().pos.y + (*maxYIter)->getFrameRect().height / 2;
 
   return rectangle_t{ {(maxX + minX) / 2, (maxY + minY) / 2}, maxX - minX, maxY - minY };
 }
