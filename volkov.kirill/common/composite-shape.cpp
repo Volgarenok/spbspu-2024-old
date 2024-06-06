@@ -71,11 +71,6 @@ volkov::CompositeShape& volkov::CompositeShape::operator=(CompositeShape&& rhs) 
 
 const volkov::Shape& volkov::CompositeShape::operator[](size_t index) const
 {
-  if (index >= count_)
-  {
-    throw std::invalid_argument("Invalid index");
-  }
-
   return *shapeArr_[index];
 }
 

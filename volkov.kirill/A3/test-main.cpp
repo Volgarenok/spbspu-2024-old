@@ -196,7 +196,6 @@ BOOST_AUTO_TEST_CASE(invalidCompositeShapeParameteres)
   testComposition.add(testRectangle);
   testComposition.add(testCircle);
 
-  BOOST_CHECK_THROW(testComposition[4], std::invalid_argument);
   BOOST_CHECK_THROW(testComposition.at(4), std::invalid_argument);
   BOOST_CHECK_THROW(testComposition.scale(-2), std::invalid_argument);
   BOOST_CHECK_THROW(testComposition.remove(4), std::out_of_range);
