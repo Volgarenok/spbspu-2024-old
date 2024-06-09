@@ -3,13 +3,12 @@
 #include "composite-shape.hpp"
 
 volkov::CompositeShape::CompositeShape():
-  count_(0),
-  shapeArr_(nullptr)
+  count_(0)
 {}
 
 volkov::CompositeShape::CompositeShape(const CompositeShape& source):
   count_(source.count_),
-  shapeArr_(new Shape* [source.count_])
+  shapeArr_(std::make_unique<shape_ptr[]>(source.count_))
 {
   for (size_t i = 0; i < count_; i++)
   {
@@ -19,37 +18,34 @@ volkov::CompositeShape::CompositeShape(const CompositeShape& source):
 
 volkov::CompositeShape::CompositeShape(CompositeShape&& source) noexcept:
   count_(source.count_),
-  shapeArr_(source.shapeArr_)
+  shapeArr_(std::move(source.shapeArr_))
 {
   source.count_ = 0;
-  source.shapeArr_ = nullptr;
 }
 
-volkov::CompositeShape::CompositeShape(Shape& shape):
+volkov::CompositeShape::CompositeShape(shape_ptr shape):
   count_(1),
-  shapeArr_(new Shape* [1])
+  shapeArr_(std::make_unique<shape_ptr[]>(1))
 {
-  shapeArr_[0] = &shape;
-}
-
-volkov::CompositeShape::~CompositeShape()
-{
-  delete[] shapeArr_;
+  if (shape == nullptr)
+  {
+    throw std::invalid_argument("Invalid pointer");
+  }
+  shapeArr_[0] = shape;
 }
 
 volkov::CompositeShape& volkov::CompositeShape::operator=(const CompositeShape& rhs)
 {
   if (this != &rhs)
   {
-    Shape** shapes = new Shape * [rhs.count_];
-    delete[] shapeArr_;
     count_ = rhs.count_;
-    shapeArr_ = shapes;
+    shape_array shapes(std::make_unique<shape_ptr[]>(count_));
 
     for (size_t i = 0; i < count_; i++)
     {
-      shapeArr_[i] = rhs.shapeArr_[i];
+      shapes[i] = rhs.shapeArr_[i];
     }
+    shapeArr_.swap(shapes);
   }
 
   return *this;
@@ -59,29 +55,27 @@ volkov::CompositeShape& volkov::CompositeShape::operator=(CompositeShape&& rhs) 
 {
   if (this != &rhs)
   {
-    delete[] shapeArr_;
     count_ = rhs.count_;
-    shapeArr_ = rhs.shapeArr_;
+    shapeArr_ = std::move(rhs.shapeArr_);
     rhs.count_ = 0;
-    rhs.shapeArr_ = nullptr;
   }
 
   return *this;
 }
 
-const volkov::Shape& volkov::CompositeShape::operator[](size_t index) const
+const volkov::Shape::shape_ptr volkov::CompositeShape::operator[](size_t index) const
 {
-  return *shapeArr_[index];
+  return shapeArr_[index];
 }
 
-const volkov::Shape& volkov::CompositeShape::at(size_t index) const
+const volkov::Shape::shape_ptr volkov::CompositeShape::at(size_t index) const
 {
   if (index >= count_)
   {
     throw std::invalid_argument("Invalid index");
   }
 
-  return *shapeArr_[index];
+  return shapeArr_[index];
 }
 
 double volkov::CompositeShape::getArea() const
@@ -96,22 +90,22 @@ double volkov::CompositeShape::getArea() const
   return compositeArea;
 }
 
-bool compareMaxX(const volkov::Shape* a, const volkov::Shape* b)
+bool compareMaxX(const volkov::Shape::shape_ptr a, const volkov::Shape::shape_ptr b)
 {
   return (a->getFrameRect().pos.x + a->getFrameRect().width / 2) < (b->getFrameRect().pos.x + b->getFrameRect().width / 2);
 }
 
-bool compareMinX(const volkov::Shape* a, const volkov::Shape* b)
+bool compareMinX(const volkov::Shape::shape_ptr a, const volkov::Shape::shape_ptr b)
 {
   return (a->getFrameRect().pos.x - a->getFrameRect().width / 2) < (b->getFrameRect().pos.x - b->getFrameRect().width / 2);
 }
 
-bool compareMaxY(const volkov::Shape* a, const volkov::Shape* b)
+bool compareMaxY(const volkov::Shape::shape_ptr a, const volkov::Shape::shape_ptr b)
 {
   return (a->getFrameRect().pos.y + a->getFrameRect().height / 2) < (b->getFrameRect().pos.y + b->getFrameRect().height / 2);
 }
 
-bool compareMinY(const volkov::Shape* a, const volkov::Shape* b)
+bool compareMinY(const volkov::Shape::shape_ptr a, const volkov::Shape::shape_ptr b)
 {
   return (a->getFrameRect().pos.y - a->getFrameRect().height / 2) < (b->getFrameRect().pos.y - b->getFrameRect().height / 2);
 }
@@ -123,10 +117,10 @@ volkov::rectangle_t volkov::CompositeShape::getFrameRect() const
     throw std::logic_error("Object doesn't exist");
   }
 
-  auto minXIter = std::min_element(shapeArr_, shapeArr_ + count_, compareMinX);
-  auto maxXIter = std::max_element(shapeArr_, shapeArr_ + count_, compareMaxX);
-  auto minYIter = std::min_element(shapeArr_, shapeArr_ + count_, compareMinY);
-  auto maxYIter = std::max_element(shapeArr_, shapeArr_ + count_, compareMaxY);
+  auto minXIter = std::min_element(shapeArr_.get(), shapeArr_.get() + count_, compareMinX);
+  auto maxXIter = std::max_element(shapeArr_.get(), shapeArr_.get() + count_, compareMaxX);
+  auto minYIter = std::min_element(shapeArr_.get(), shapeArr_.get() + count_, compareMinY);
+  auto maxYIter = std::max_element(shapeArr_.get(), shapeArr_.get() + count_, compareMaxY);
 
   double minX = (*minXIter)->getFrameRect().pos.x - (*minXIter)->getFrameRect().width / 2;
   double maxX = (*maxXIter)->getFrameRect().pos.x + (*maxXIter)->getFrameRect().width / 2;
@@ -174,19 +168,23 @@ void volkov::CompositeShape::doScale(double factor)
   }
 }
 
-void volkov::CompositeShape::add(Shape& shape)
+void volkov::CompositeShape::add(shape_ptr shape)
 {
-  Shape** shapes = new Shape * [count_ + 1];
+  if (shape == nullptr)
+  {
+    throw std::invalid_argument("Invalid pointer");
+  }
+
+  shape_array shapes(std::make_unique<shape_ptr[]>(count_ + 1));
 
   for (size_t i = 0; i < count_; i++)
   {
     shapes[i] = shapeArr_[i];
   }
 
-  shapes[count_] = &shape;
+  shapes[count_] = shape;
   count_++;
-  delete[] shapeArr_;
-  shapeArr_ = shapes;
+  shapeArr_.swap(shapes);
 }
 
 void volkov::CompositeShape::remove(size_t index)

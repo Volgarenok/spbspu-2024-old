@@ -4,7 +4,7 @@
 #include <rectangle.hpp>
 #include <composite-shape.hpp>
 
-void printFrameRect(const volkov::Shape &shape, std::ostream& out)
+void printFrameRect(const volkov::CompositeShape& shape, std::ostream& out)
 {
   volkov::rectangle_t frameRect = shape.getFrameRect();
   out << frameRect.pos.x << ' ' << frameRect.pos.y << ' '
@@ -16,16 +16,16 @@ int main()
 {
   try
   {
-    volkov::Shape* rectangle = new volkov::Rectangle({ {1, 2}, 3, 4 });
-    volkov::Shape* circle = new volkov::Circle({ 5, 6 }, 7);
+    volkov::Shape::shape_ptr rectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {1, 2}, 3, 4 }));
+    volkov::Shape::shape_ptr circle = std::make_shared<volkov::Circle>(volkov::Circle({ 5, 6 }, 7));
 
     volkov::CompositeShape shape;
-    shape.add(*rectangle);
+    shape.add(rectangle);
     std::cout << shape.getArea() << "\n";
     printFrameRect(shape, std::cout);
     std::cout << "\n\n";
 
-    shape.add(*circle);
+    shape.add(circle);
     std::cout << shape.getArea() << "\n";
     printFrameRect(shape, std::cout);
     std::cout << "\n\n";
@@ -49,9 +49,6 @@ int main()
     std::cout << shape.getArea() << "\n";
     printFrameRect(shape, std::cout);
     std::cout << "\n\n";
-
-    delete rectangle;
-    delete circle;
   }
   catch (const std::invalid_argument& e)
   {

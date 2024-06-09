@@ -11,8 +11,9 @@ const double accuracy = 0.01;
 
 BOOST_AUTO_TEST_CASE(testCompositeShapeCopyConstructor)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
+
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -31,8 +32,8 @@ BOOST_AUTO_TEST_CASE(testCompositeShapeCopyConstructor)
 
 BOOST_AUTO_TEST_CASE(testCompositeShapeMoveConstructor)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -54,8 +55,8 @@ BOOST_AUTO_TEST_CASE(testCompositeShapeMoveConstructor)
 
 BOOST_AUTO_TEST_CASE(testCompositeShapeCopyOperator)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -75,8 +76,8 @@ BOOST_AUTO_TEST_CASE(testCompositeShapeCopyOperator)
 
 BOOST_AUTO_TEST_CASE(testCompositeShapeMoveOperator)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -99,8 +100,8 @@ BOOST_AUTO_TEST_CASE(testCompositeShapeMoveOperator)
 
 BOOST_AUTO_TEST_CASE(constCompositeShapeAfterMovingByIncrements)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -116,8 +117,8 @@ BOOST_AUTO_TEST_CASE(constCompositeShapeAfterMovingByIncrements)
 
 BOOST_AUTO_TEST_CASE(constCompositeShapeAfterMovingToPoint)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -133,8 +134,8 @@ BOOST_AUTO_TEST_CASE(constCompositeShapeAfterMovingToPoint)
 
 BOOST_AUTO_TEST_CASE(quadraticChangeCompositeShapeAreaAfterScaling)
 {
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   volkov::CompositeShape testComposition(testRectangle);
   testComposition.add(testCircle);
 
@@ -155,9 +156,9 @@ BOOST_AUTO_TEST_CASE(quadraticChangeCompositeShapeAreaAfterScaling)
 
 BOOST_AUTO_TEST_CASE(changeCompositeShapeAreaAfterAddingShape)
 {
-  volkov::Rectangle testRectangle_1({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
-  volkov::Rectangle testRectangle_2({ 4, 4 }, 4, 6);
+  volkov::Shape::shape_ptr testRectangle_1 = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
+  volkov::Shape::shape_ptr testRectangle_2 = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {4, 4}, 4, 6 }));
   volkov::CompositeShape testComposition(testRectangle_1);
   testComposition.add(testCircle);
 
@@ -165,14 +166,14 @@ BOOST_AUTO_TEST_CASE(changeCompositeShapeAreaAfterAddingShape)
 
   testComposition.add(testRectangle_2);
 
-  BOOST_CHECK_CLOSE(testComposition.getArea(), initialArea + testRectangle_2.getArea(), accuracy);
+  BOOST_CHECK_CLOSE(testComposition.getArea(), initialArea + testRectangle_2->getArea(), accuracy);
 }
 
 BOOST_AUTO_TEST_CASE(changeCompositeShapeAreaAfterDeletingShape)
 {
-  volkov::Rectangle testRectangle_1({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
-  volkov::Rectangle testRectangle_2({ 4, 4 }, 4, 6);
+  volkov::Shape::shape_ptr testRectangle_1 = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
+  volkov::Shape::shape_ptr testRectangle_2 = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {4, 4}, 4, 6 }));
   volkov::CompositeShape testComposition(testRectangle_1);
   testComposition.add(testCircle);
   testComposition.add(testRectangle_2);
@@ -181,7 +182,7 @@ BOOST_AUTO_TEST_CASE(changeCompositeShapeAreaAfterDeletingShape)
 
   testComposition.remove(1);
 
-  BOOST_CHECK_CLOSE(testComposition.getArea(), initialArea - testCircle.getArea(), accuracy);
+  BOOST_CHECK_CLOSE(testComposition.getArea(), initialArea - testCircle->getArea(), accuracy);
 }
 
 BOOST_AUTO_TEST_CASE(invalidCompositeShapeParameteres)
@@ -191,8 +192,8 @@ BOOST_AUTO_TEST_CASE(invalidCompositeShapeParameteres)
   BOOST_CHECK_THROW(testComposition.getFrameRect(), std::logic_error);
   BOOST_CHECK_THROW(testComposition.scale(2), std::logic_error);
 
-  volkov::Rectangle testRectangle({ 2, 2 }, 2, 3);
-  volkov::Circle testCircle({ 1, 1 }, 1);
+  volkov::Shape::shape_ptr testRectangle = std::make_shared<volkov::Rectangle>(volkov::Rectangle({ {2, 2}, 2, 3 }));
+  volkov::Shape::shape_ptr testCircle = std::make_shared<volkov::Circle>(volkov::Circle({ 1, 1 }, 1));
   testComposition.add(testRectangle);
   testComposition.add(testCircle);
 
