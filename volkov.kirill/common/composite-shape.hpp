@@ -24,7 +24,9 @@ namespace volkov
     rectangle_t getFrameRect() const override;
     void move(const point_t& newPos) override;
     void move(double dx, double dy) override;
+    void rotate(double angle) override;
     size_t getSize() const;
+    shape_array getShapes() const;
     void add(shape_ptr shape);
     void remove(size_t index);
 

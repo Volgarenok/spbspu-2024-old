@@ -13,6 +13,7 @@ namespace volkov
     rectangle_t getFrameRect() const override;
     void move(const point_t& newPos) override;
     void move(double dx, double dy) override;
+    void rotate(double angle) override;
 
   protected:
     void doScale(double factor) override;
@@ -21,6 +22,7 @@ namespace volkov
     point_t center_;
     double height_;
     double width_;
+    double angle_;
   };
 }
 

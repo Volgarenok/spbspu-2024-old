@@ -15,6 +15,8 @@ namespace volkov
     double height;
     double width;
   };
+
+  constexpr double PI = 3.141592;
 }
 
 #endif

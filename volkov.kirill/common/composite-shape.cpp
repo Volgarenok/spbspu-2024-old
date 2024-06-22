@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <stdexcept>
 #include "composite-shape.hpp"
 
@@ -151,6 +152,17 @@ size_t volkov::CompositeShape::getSize() const
   return count_;
 }
 
+volkov::Shape::shape_array volkov::CompositeShape::getShapes() const
+{
+  shape_array shapes(std::make_unique<shape_ptr[]>(count_));
+
+  for (size_t i = 0; i < count_; i++)
+  {
+    shapes[i] = shapeArr_[i];
+  }
+  return shapes;
+}
+
 void volkov::CompositeShape::doScale(double factor)
 {
   if (count_ == 0)
@@ -165,6 +177,24 @@ void volkov::CompositeShape::doScale(double factor)
     shapeArr_[i]->scale(factor);
     point_t shapeCenter = shapeArr_[i]->getFrameRect().pos;
     shapeArr_[i]->move((shapeCenter.x - center.x) * (factor - 1), (shapeCenter.y - center.y) * (factor - 1));
+  }
+}
+
+void volkov::CompositeShape::rotate(double angle)
+{
+  double radians = angle * PI / 180;
+  const double sinA = std::sin(radians);
+  const double cosA = std::cos(radians);
+  const point_t compositeCenter = getFrameRect().pos;
+  for (size_t i = 0; i < count_; i++)
+  {
+    const point_t shapeCenter = shapeArr_[i]->getFrameRect().pos;
+    const double dx = shapeCenter.x - compositeCenter.x;
+    const double dy = shapeCenter.y - compositeCenter.y;
+    const double newX = compositeCenter.x + dx * cosA - dy * sinA;
+    const double newY = compositeCenter.y + dx * sinA + dy * cosA;
+    shapeArr_[i]->move({ newX, newY});
+    shapeArr_[i]->rotate(angle);
   }
 }
 

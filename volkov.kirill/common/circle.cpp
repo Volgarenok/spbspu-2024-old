@@ -1,8 +1,5 @@
 #include <stdexcept>
-#include <cmath>
 #include "circle.hpp"
-
-constexpr double PI = 3.141592;
 
 volkov::Circle::Circle(const point_t &pos, double radius):
   center_(pos),
@@ -39,3 +36,6 @@ void volkov::Circle::doScale(double factor)
 {
   radius_ *= factor;
 }
+
+void volkov::Circle::rotate(double)
+{}
