@@ -15,8 +15,8 @@ namespace volkov
 
     Matrix &operator=(const Matrix &rhs);
     Matrix &operator=(Matrix &&rhs) noexcept;
-    const Shape::shape_ptr at(size_t row, rsize_t column) const;
-    const Shape::shape_ptr unsafe_at(size_t row, rsize_t column) const;
+    const Shape::shape_ptr at(size_t row, size_t column) const;
+    const Shape::shape_ptr unsafe_at(size_t row, size_t column) const;
     bool operator==(const Matrix &rhs) const;
     bool operator!=(const Matrix &rhs) const;
 

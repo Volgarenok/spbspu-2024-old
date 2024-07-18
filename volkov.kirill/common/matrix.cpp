@@ -63,7 +63,7 @@ volkov::Matrix & volkov::Matrix::operator=(Matrix &&rhs) noexcept
   return *this;
 }
 
-const volkov::Shape::shape_ptr volkov::Matrix::at(size_t row, rsize_t column) const
+const volkov::Shape::shape_ptr volkov::Matrix::at(size_t row, size_t column) const
 {
   if (row >= rows_ || column >= columns_)
   {
@@ -73,7 +73,7 @@ const volkov::Shape::shape_ptr volkov::Matrix::at(size_t row, rsize_t column) co
   return list_[row * columns_ + column];
 }
 
-const volkov::Shape::shape_ptr volkov::Matrix::unsafe_at(size_t row, rsize_t column) const
+const volkov::Shape::shape_ptr volkov::Matrix::unsafe_at(size_t row, size_t column) const
 {
   return list_[row * columns_ + column];
 }
