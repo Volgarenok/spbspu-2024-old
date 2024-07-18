@@ -67,13 +67,13 @@ int main()
     {
       for (size_t j = 0; j < matrix.getColumns(); j++)
       {
-        if (matrix[i][j] != nullptr)
+        if (matrix.at(i, j) != nullptr)
         {
           std::cout << "Info about shape in matrix["
                     << i << "]["
                     << j << "]" << "\n";
-          std::cout << matrix[i][j]->getArea() << "\n";
-          volkov::rectangle_t frameRect = matrix[i][j]->getFrameRect();
+          std::cout << matrix.at(i, j)->getArea() << "\n";
+          volkov::rectangle_t frameRect = matrix.at(i, j)->getFrameRect();
           std::cout << frameRect.pos.x << ' '
                     << frameRect.pos.y << ' '
                     << frameRect.height << ' '

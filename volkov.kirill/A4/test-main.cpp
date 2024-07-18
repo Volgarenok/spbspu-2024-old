@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(invalidMatrixParameteres)
 
   volkov::Matrix testMatrix = part(testComposition);
 
-  BOOST_CHECK_THROW(testMatrix.at(10), std::out_of_range);
+  BOOST_CHECK_THROW(testMatrix.at(10, 1), std::out_of_range);
 }
 
 BOOST_AUTO_TEST_CASE(testCorrectPartition)
@@ -116,10 +116,10 @@ BOOST_AUTO_TEST_CASE(testCorrectPartition)
   BOOST_REQUIRE_EQUAL(testMatrix.getLayerSize(0), 2);
   BOOST_REQUIRE_EQUAL(testMatrix.getLayerSize(1), 2);
 
-  BOOST_CHECK_EQUAL(testMatrix[0][0], testRectangle_1_ptr);
-  BOOST_CHECK_EQUAL(testMatrix[0][1], testRectangle_2_ptr);
-  BOOST_CHECK_EQUAL(testMatrix[1][0], testCircle_1_ptr);
-  BOOST_CHECK_EQUAL(testMatrix[1][1], testCircle_2_ptr);
+  BOOST_CHECK_EQUAL(testMatrix.at(0, 0), testRectangle_1_ptr);
+  BOOST_CHECK_EQUAL(testMatrix.at(0, 1), testRectangle_2_ptr);
+  BOOST_CHECK_EQUAL(testMatrix.at(1, 0), testCircle_1_ptr);
+  BOOST_CHECK_EQUAL(testMatrix.at(1, 1), testCircle_2_ptr);
 }
 
 BOOST_AUTO_TEST_CASE(testOverlap)

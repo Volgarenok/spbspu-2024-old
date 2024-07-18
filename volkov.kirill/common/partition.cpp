@@ -13,14 +13,14 @@ volkov::Matrix volkov::part(const volkov::Shape::shape_array array, size_t size)
     {
       for (size_t k = 0; k < matrix.getColumns(); k++)
       {
-        if (matrix[j][k] == nullptr)
+        if (matrix.at(j, k) == nullptr)
         {
           rows = j;
           columns = k;
           break;
         }
 
-        if (isOverlap(array[i], matrix[j][k]))
+        if (isOverlap(array[i], matrix.at(j, k)))
         {
           rows = j + 1;
           columns = 0;

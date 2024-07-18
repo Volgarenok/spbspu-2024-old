@@ -28,9 +28,12 @@ volkov::Matrix::Matrix(Matrix &&source) noexcept:
 
 volkov::Matrix & volkov::Matrix::operator=(const Matrix &rhs)
 {
+  using Shape_array = volkov::Shape::shape_array;
+  using Shape_ptr = volkov::Shape::shape_ptr;
+
   if (this != &rhs)
   {
-    volkov::Shape::shape_array shapes(std::make_unique<volkov::Shape::shape_ptr[]>(rhs.rows_ * rhs.columns_));
+    Shape_array shapes(std::make_unique<Shape_ptr[]>(rhs.rows_ * rhs.columns_));
     rows_ = rhs.rows_;
     columns_ = rhs.columns_;
 
@@ -60,33 +63,19 @@ volkov::Matrix & volkov::Matrix::operator=(Matrix &&rhs) noexcept
   return *this;
 }
 
-const volkov::Shape::shape_array volkov::Matrix::operator[](size_t index) const
+const volkov::Shape::shape_ptr volkov::Matrix::at(size_t row, rsize_t column) const
 {
-  volkov::Shape::shape_array shapes(std::make_unique<volkov::Shape::shape_ptr[]>(columns_));
-
-  for (size_t i = 0; i < columns_; i++)
-  {
-    shapes[i] = list_[index * columns_ + i];
-  }
-
-  return shapes;
-}
-
-const volkov::Shape::shape_array volkov::Matrix::at(size_t index) const
-{
-  if (index >= rows_)
+  if (row >= rows_ || column >= columns_)
   {
     throw std::out_of_range("Invalid index");
   }
 
-  volkov::Shape::shape_array shapes(std::make_unique<volkov::Shape::shape_ptr[]>(columns_));
+  return list_[row * columns_ + column];
+}
 
-  for (size_t i = 0; i < columns_; i++)
-  {
-    shapes[i] = list_[index * columns_ + i];
-  }
-
-  return shapes;
+const volkov::Shape::shape_ptr volkov::Matrix::unsafe_at(size_t row, rsize_t column) const
+{
+  return list_[row * columns_ + column];
 }
 
 bool volkov::Matrix::operator==(const Matrix &rhs) const
@@ -142,6 +131,9 @@ size_t volkov::Matrix::getLayerSize(size_t layer) const
 
 void volkov::Matrix::add(volkov::Shape::shape_ptr shape, size_t row, size_t column)
 {
+  using Shape_array = volkov::Shape::shape_array;
+  using Shape_ptr = volkov::Shape::shape_ptr;
+
   if ((row > rows_) || (column > columns_))
   {
     throw std::out_of_range("Invalid indexes");
@@ -150,7 +142,7 @@ void volkov::Matrix::add(volkov::Shape::shape_ptr shape, size_t row, size_t colu
   size_t rows = (row == rows_) ? (rows_ + 1) : rows_;
   size_t columns = (column == columns_) ? (columns_ + 1) : columns_;
 
-  volkov::Shape::shape_array shapes(std::make_unique<volkov::Shape::shape_ptr[]>(rows * columns));
+  Shape_array shapes(std::make_unique<Shape_ptr[]>(rows * columns));
 
   for (size_t i = 0; i < rows; i++)
   {
