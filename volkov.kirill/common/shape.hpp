@@ -13,6 +13,7 @@ namespace volkov
     virtual rectangle_t getFrameRect() const = 0;
     virtual void move(const point_t&) = 0;
     virtual void move(double dx, double dy) = 0;
+    virtual void rotate(double angle) = 0;
     void scale(double factor);
 
     using shape_ptr = std::shared_ptr<Shape>;
